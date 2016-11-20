@@ -4,7 +4,7 @@ var timeTaken = 0;
 var allTimes = [];
 var persons, gameMode, startTime, endTime;
 
-gameMode = 'reverse';
+gameMode = '';
 function main() {
   $.getJSON('http://api.namegame.willowtreemobile.com/', function(result) { 
     if (persons === undefined) {
@@ -103,9 +103,9 @@ function getUserInput(solutionId) {
 function handleUserInput(isCorrect, userInput) {
   console.log(isCorrect);
   if (gameMode !== 'reverse') {
-    var overlay = $('span.' + userInput, 'img#' + userInput);
+    var overlay = $('span.' + userInput);
   } else {
-    var overlay = $('img#' + userInput);
+    var overlay = $('img#' + userInput, 'span.' + userInput);
   }
   if (isCorrect) {
     endTime = getTime();
