@@ -46,6 +46,38 @@ function getUserInput(solutionId) {
     userInput = this.id;
     handleUserInput(userInput == solutionId, userInput);
   });
+  $(document).on('keydown', function (e) {
+    switch (e.keyCode) {
+      case 49:
+      case 97:
+	$('#0').click();
+	break;
+
+      case 50:
+      case 98:
+	$('#1').click();
+	break;
+
+      case 51:
+      case 99:
+	$('#2').click();
+	break;
+
+      case 52:
+      case 100:
+	$('#3').click();
+	break;
+
+      case 53:
+      case 101:
+	$('#4').click();
+	break;
+
+      default:
+	console.log(e.keyCode + ' key pressed');
+
+    }
+  });
 }
 
 function handleUserInput(isCorrect, userInput) {
@@ -55,9 +87,11 @@ function handleUserInput(isCorrect, userInput) {
     overlay.removeClass('hidden');
     overlay.addClass('correct');
     setTimeout(main, 900);
+    wins++;
   } else {
     overlay.removeClass('hidden');
     overlay.addClass('wrong');
+    losses++;
   }
 }
 
