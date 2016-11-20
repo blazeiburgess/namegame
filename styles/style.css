@@ -1,0 +1,36 @@
+.wrong {
+  color: white;
+  background-color: red;
+}
+.correct {
+  color: white;
+  background-color: green;
+}
+.parent-div {
+  display: inline-block;
+  text-align: center;
+}
+img {
+  position: relative;
+  height: 75%;
+  width: 75%;
+  max-width: 16em;
+}
+.hidden {
+  visibility: hidden;
+}
+span {
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 75%;
+  margin-left: 12.5%;
+}
+.wins {
+  color: darkgreen;
+}
+
+.losses {
+  color: darkred;
+}
+

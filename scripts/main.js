@@ -45,7 +45,7 @@ function handleUserInput(isCorrect, userInput) {
     $('.pictures').off();
     overlay.removeClass('hidden');
     overlay.addClass('correct');
-    setTimeout(main, 9000);
+    setTimeout(main, 900);
   } else {
     overlay.removeClass('hidden');
     overlay.addClass('wrong');
