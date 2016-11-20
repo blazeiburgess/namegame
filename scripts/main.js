@@ -35,8 +35,21 @@ function getUserInput(solutionId) {
   $('.pictures').click(function(event) {
     $(this).off();
     userInput = this.id;
-    console.log(userInput == solutionId);
+    handleUserInput(userInput == solutionId, userInput);
   });
+}
+
+function handleUserInput(isCorrect, userInput) {
+  var overlay = $('span.' + userInput);
+  if (isCorrect) {
+    $('.pictures').off();
+    overlay.removeClass('hidden');
+    overlay.addClass('correct');
+    setTimeout(main, 9000);
+  } else {
+    overlay.removeClass('hidden');
+    overlay.addClass('wrong');
+  }
 }
 
 function getRandomFromArray(array) {
