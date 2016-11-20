@@ -26,8 +26,17 @@ function displayPersons(selectionOfFive) {
   app.append('<h2>Who is ' + selectionOfFive[solutionId].name + "?"); 
   for (var i = 0; i < selectionOfFive.length; i++) {
     app.append('<div class="parent-div"><span class="' + i + ' hidden">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="pictures" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /><br />(' + (i + 1) + ')</div>');
-
   }
+  getUserInput(solutionId);
+}
+
+function getUserInput(solutionId) {
+  var userInput;
+  $('.pictures').click(function(event) {
+    $(this).off();
+    userInput = this.id;
+    console.log(userInput == solutionId);
+  });
 }
 
 function getRandomFromArray(array) {
