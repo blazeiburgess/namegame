@@ -2,7 +2,7 @@ var wins = 0;
 var losses = 0;
 var timeTaken = 0;
 var allTimes = [];
-var persons, gameMode, startTime, endTime, clicks, doNotClick, lastClickTime;
+var persons, gameMode, startTime, endTime, clicks, doNotClick, lastClickTime, clickPolling;
 
 gameMode = '';
 function main() {
@@ -32,6 +32,7 @@ function makePersonsFromJSON(personsArray) {
     }
   }
   clicks = 0;
+  lastClickTime = getTime();
   displayPersons(selectionOfFive);
 }
 
@@ -58,9 +59,11 @@ function displayPersons(selectionOfFive) {
       }
   }
 
-  setTimeout(function () {
-    revealFaces(selectionOfFive, solutionId);
-  }, 9000)
+  clickPolling = setInterval(function () {
+    if (getTime() - lastClickTime > 10) {
+      revealFaces(selectionOfFive, solutionId);
+    }
+  }, 1000)
   startTime = getTime();
   getUserInput(solutionId);
 }
@@ -122,7 +125,7 @@ function handleUserInput(isCorrect, userInput) {
     timeTaken = endTime - startTime;
     allTimes.push(timeTaken);
     setTimeout(main, 900);
-    lastClickTime = 0;
+    lastClickTime = getTime();
   } else {
     overlay.removeClass('hidden');
     overlay.addClass('wrong');
@@ -170,10 +173,8 @@ function revealFaces(selectionOfFive, solutionId) {
     doNotClick.push(randPersonIndex);
     $("#" + randPersonIndex).click();
   } 
-  if (clicks < 4) {
-    setTimeout(function () {
-      revealFaces(selectionOfFive, solutionId);
-    }, 9000);
+  if (clicks == 4) {
+    clearInterval(clickPolling);
   }
 }
 
