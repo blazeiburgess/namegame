@@ -2,7 +2,7 @@ var wins = 0;
 var losses = 0;
 var timeTaken = 0;
 var allTimes = [];
-var persons, gameMode, startTime, endTime;
+var persons, gameMode, startTime, endTime, clicks, doNotClick, lastClickTime;
 
 gameMode = '';
 function main() {
@@ -31,6 +31,7 @@ function makePersonsFromJSON(personsArray) {
       selectionOfFive.push(randPerson);
     }
   }
+  clicks = 0;
   displayPersons(selectionOfFive);
 }
 
@@ -38,6 +39,7 @@ function displayPersons(selectionOfFive) {
   var app = $("#app");
   app.empty();
   var solutionId = selectionOfFive.indexOf(getRandomFromArray(selectionOfFive));
+  doNotClick = [solutionId];
   console.log(solutionId);
   switch (gameMode) {
     case 'reverse':
@@ -55,6 +57,10 @@ function displayPersons(selectionOfFive) {
 	app.append('<div class="parent-div"><span class="' + i + ' hidden">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="pictures" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /><br />(' + (i + 1) + ')</div>');
       }
   }
+
+  setTimeout(function () {
+    revealFaces(selectionOfFive, solutionId);
+  }, 9000)
   startTime = getTime();
   getUserInput(solutionId);
 }
@@ -116,11 +122,15 @@ function handleUserInput(isCorrect, userInput) {
     timeTaken = endTime - startTime;
     allTimes.push(timeTaken);
     setTimeout(main, 900);
+    lastClickTime = 0;
   } else {
     overlay.removeClass('hidden');
     overlay.addClass('wrong');
+    doNotClick.push(userInput);
+    lastClickTime = getTime();
     losses++;
   }
+  clicks++;
   $('.count').html(displayCount());
 }
 
@@ -150,6 +160,21 @@ function displayCount() {
 
 function getMatts (person) {
   return person.name.indexOf('Mat') == 0;
+}
+
+function revealFaces(selectionOfFive, solutionId) {
+  var randPerson = getRandomFromArray(selectionOfFive); 
+  var randPersonIndex = selectionOfFive.indexOf(randPerson);
+  selectionOfFive.slice(randPersonIndex, 1);
+  if (doNotClick.indexOf(randPersonIndex) < 0) { 
+    doNotClick.push(randPersonIndex);
+    $("#" + randPersonIndex).click();
+  } 
+  if (clicks < 4) {
+    setTimeout(function () {
+      revealFaces(selectionOfFive, solutionId);
+    }, 9000);
+  }
 }
 
 
