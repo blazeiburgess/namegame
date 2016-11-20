@@ -1,6 +1,7 @@
 var wins = 0;
 var losses = 0;
 var timeTaken;
+var allTimes = [];
 var persons, gameMode, startTime, endTime;
 
 function main() {
@@ -34,6 +35,7 @@ function displayPersons(selectionOfFive) {
   var solutionId = selectionOfFive.indexOf(getRandomFromArray(selectionOfFive));
   console.log(solutionId);
   app.append('<h2>Who is ' + selectionOfFive[solutionId].name + "?"); 
+  app.append('<div class="count">' + displayCount() + '</div>');
   for (var i = 0; i < selectionOfFive.length; i++) {
     app.append('<div class="parent-div"><span class="' + i + ' hidden">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="pictures" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /><br />(' + (i + 1) + ')</div>');
   }
@@ -91,20 +93,39 @@ function handleUserInput(isCorrect, userInput) {
     overlay.addClass('correct');
     wins++;
     timeTaken = endTime - startTime;
+    allTimes.push(timeTaken);
     setTimeout(main, 900);
   } else {
     overlay.removeClass('hidden');
     overlay.addClass('wrong');
     losses++;
   }
+  $('.count').html(displayCount());
 }
 
 function getRandomFromArray(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-function gettime() {
+function getTime() {
   return new Date().getTime() / 1000;
 }
+
+function averageTime() {
+  if (allTimes.length > 0) {
+    var sum = 0;
+    for (var i = 0; i < allTimes.length; i++) {
+      sum += allTimes[i]
+    }
+    return Math.floor(sum / allTimes.length);
+  } else {
+    return "No data yet"
+  }
+}
+
+function displayCount() {
+  return '<br /><span class="wins">Wins: ' + wins + '</span><span class="losses">Losses: ' + losses + '</span><span>Time taken to get last answer (seconds): '+ Math.floor(timeTaken) + '</span>' + '<span>Average time taken (seconds): ' + averageTime() +  '<br />';
+}
+
 
 main();
