@@ -1,6 +1,7 @@
 var wins = 0;
 var losses = 0;
-var persons, gameMode;
+var timeTaken;
+var persons, gameMode, startTime, endTime;
 
 function main() {
   $.getJSON('http://api.namegame.willowtreemobile.com/', function(result) { 
@@ -36,6 +37,7 @@ function displayPersons(selectionOfFive) {
   for (var i = 0; i < selectionOfFive.length; i++) {
     app.append('<div class="parent-div"><span class="' + i + ' hidden">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="pictures" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /><br />(' + (i + 1) + ')</div>');
   }
+  startTime = getTime();
   getUserInput(solutionId);
 }
 
@@ -83,11 +85,13 @@ function getUserInput(solutionId) {
 function handleUserInput(isCorrect, userInput) {
   var overlay = $('span.' + userInput);
   if (isCorrect) {
+    endTime = getTime();
     $('.pictures').off();
     overlay.removeClass('hidden');
     overlay.addClass('correct');
-    setTimeout(main, 900);
     wins++;
+    timeTaken = endTime - startTime;
+    setTimeout(main, 900);
   } else {
     overlay.removeClass('hidden');
     overlay.addClass('wrong');
@@ -97,6 +101,10 @@ function handleUserInput(isCorrect, userInput) {
 
 function getRandomFromArray(array) {
   return array[Math.floor(Math.random() * array.length)];
+}
+
+function gettime() {
+  return new Date().getTime() / 1000;
 }
 
 main();
