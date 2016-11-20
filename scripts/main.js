@@ -4,6 +4,7 @@ var timeTaken = 0;
 var allTimes = [];
 var persons, gameMode, startTime, endTime;
 
+gameMode = 'reverse';
 function main() {
   $.getJSON('http://api.namegame.willowtreemobile.com/', function(result) { 
     if (persons === undefined) {
@@ -38,10 +39,21 @@ function displayPersons(selectionOfFive) {
   app.empty();
   var solutionId = selectionOfFive.indexOf(getRandomFromArray(selectionOfFive));
   console.log(solutionId);
-  app.append('<h2>Who is ' + selectionOfFive[solutionId].name + "?"); 
-  app.append('<div class="count">' + displayCount() + '</div>');
-  for (var i = 0; i < selectionOfFive.length; i++) {
-    app.append('<div class="parent-div"><span class="' + i + ' hidden">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="pictures" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /><br />(' + (i + 1) + ')</div>');
+  switch (gameMode) {
+    case 'reverse':
+      app.append('Who is this? <br /><img class="' + solutionId + '" name="' + selectionOfFive[solutionId].name + '" src="' + selectionOfFive[solutionId].url + '" /><br />')
+      app.append('<div class="count">' + displayCount() + '</div><br /><br />');
+      for (var i = 0; i < selectionOfFive.length; i++) {
+	app.append('<div class="parent-div" align="center">(' + (i + 1) + ')<span class="pictures ' + i + '" id="' + i + '">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="hidden" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /></div>');
+      }
+      break;
+
+    default:
+      app.append('<h2>Who is ' + selectionOfFive[solutionId].name + "?");
+      app.append('<div class="count">' + displayCount() + '</div>');
+      for (var i = 0; i < selectionOfFive.length; i++) {
+	app.append('<div class="parent-div"><span class="' + i + ' hidden">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="pictures" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /><br />(' + (i + 1) + ')</div>');
+      }
   }
   startTime = getTime();
   getUserInput(solutionId);
@@ -51,7 +63,7 @@ function getUserInput(solutionId) {
   var userInput;
   $('.pictures').click(function(event) {
     $(this).off();
-    userInput = this.id;
+    userInput = this.id; 
     handleUserInput(userInput == solutionId, userInput);
   });
   $(document).on('keydown', function (e) {
@@ -89,7 +101,12 @@ function getUserInput(solutionId) {
 }
 
 function handleUserInput(isCorrect, userInput) {
-  var overlay = $('span.' + userInput);
+  console.log(isCorrect);
+  if (gameMode !== 'reverse') {
+    var overlay = $('span.' + userInput, 'img#' + userInput);
+  } else {
+    var overlay = $('img#' + userInput);
+  }
   if (isCorrect) {
     endTime = getTime();
     $('.pictures').off();
