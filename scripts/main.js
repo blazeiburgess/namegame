@@ -1,6 +1,15 @@
+var wins = 0;
+var losses = 0;
+var persons, gameMode;
+
 function main() {
   $.getJSON('http://api.namegame.willowtreemobile.com/', function(result) { 
-    makePersonsFromJSON(result);
+    if (persons === undefined) {
+      persons = result
+      makePersonsFromJSON(persons);
+    } else {
+      makePersonsFromJSON(persons);
+    }
   });
 }
 
