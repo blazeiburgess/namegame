@@ -15,7 +15,19 @@ function makePersonsFromJSON(personsArray) {
       selectionOfFive.push(randPerson);
     }
   }
-  console.log(selectionOfFive);
+  displayPersons(selectionOfFive);
+}
+
+function displayPersons(selectionOfFive) {
+  var app = $("#app");
+  app.empty();
+  var solutionId = selectionOfFive.indexOf(getRandomFromArray(selectionOfFive));
+  console.log(solutionId);
+  app.append('<h2>Who is ' + selectionOfFive[solutionId].name + "?"); 
+  for (var i = 0; i < selectionOfFive.length; i++) {
+    app.append('<div class="parent-div"><span class="' + i + ' hidden">' + selectionOfFive[i].name + '</span><img style="display: inline;" class="pictures" id="' + i + '" name="' + selectionOfFive[i].name + '" src="' + selectionOfFive[i].url + '" /><br />(' + (i + 1) + ')</div>');
+
+  }
 }
 
 function getRandomFromArray(array) {
