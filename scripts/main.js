@@ -1,6 +1,6 @@
 var wins = 0;
 var losses = 0;
-var timeTaken;
+var timeTaken = 0;
 var allTimes = [];
 var persons, gameMode, startTime, endTime;
 
@@ -19,7 +19,11 @@ function makePersonsFromJSON(personsArray) {
   var selectionOfFive = [];
   var usedIndexes = [];
   for (var i = 0; i < 5; i++) {
-    var randPerson = getRandomFromArray(personsArray);
+    if (gameMode == 'matts') {
+      var randPerson = getRandomFromArray(personsArray.filter(getMatts));
+    } else {
+      var randPerson = getRandomFromArray(personsArray);
+    }
     if (selectionOfFive.indexOf(randPerson) >= 0) {
       i--;
     } else {
@@ -119,12 +123,16 @@ function averageTime() {
     }
     return Math.floor(sum / allTimes.length);
   } else {
-    return "No data yet"
+    return 0
   }
 }
 
 function displayCount() {
   return '<br /><span class="wins">Wins: ' + wins + '</span><span class="losses">Losses: ' + losses + '</span><span>Time taken to get last answer (seconds): '+ Math.floor(timeTaken) + '</span>' + '<span>Average time taken (seconds): ' + averageTime() +  '<br />';
+}
+
+function getMatts (person) {
+  return person.name.indexOf('Mat') == 0;
 }
 
 
