@@ -39,6 +39,8 @@ function makePersonsFromJSON(personsArray) {
 function displayPersons(selectionOfFive) {
   var app = $("#app");
   app.empty();
+  app.append(gameModeSwitcher);
+  setGameModeListeners();
   var solutionId = selectionOfFive.indexOf(getRandomFromArray(selectionOfFive));
   doNotClick = [solutionId];
   console.log(solutionId);
@@ -114,7 +116,7 @@ function handleUserInput(isCorrect, userInput) {
   if (gameMode !== 'reverse') {
     var overlay = $('span.' + userInput);
   } else {
-    var overlay = $('img#' + userInput, 'span.' + userInput);
+    var overlay = $('img#' + userInput);
   }
   if (isCorrect) {
     endTime = getTime();
@@ -178,5 +180,14 @@ function revealFaces(selectionOfFive, solutionId) {
   }
 }
 
+function setGameModeListeners () {
+  $('.gameMode').on('click', function(e) {
+    e.preventDefault();
+    gameMode = this.id;
+    main();
+  });
+}
+
+var gameModeSwitcher = "<ul><li><a href='#' id='normal' class='gameMode'>Normal Mode</a></li><li><a href='#' id='reverse' class='gameMode'>Reverse Mode</a></li><li><a href='#' id='matts' class='gameMode'>Matt Mode</a></li></ul>"
 
 main();
